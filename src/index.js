@@ -9,6 +9,7 @@ import {
 import express from 'express'
 import graphqlHTTP from 'express-graphql'
 
+import Mutation from './mutation'
 import loader from './dataloader'
 import user from './user'
 import book from './book'
@@ -60,7 +61,8 @@ const rootQuery = new GraphQLObjectType({
 })
 
 const schema = new GraphQLSchema({
-  query: rootQuery
+  query: rootQuery,
+  mutation: Mutation
 })
 
 app.use('/graphql', graphqlHTTP(req => ({
