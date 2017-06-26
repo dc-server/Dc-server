@@ -4,12 +4,23 @@ const {
   GraphQLInt
 } = require('graphql')
 
+const user = require('./user')
+
 module.exports = new GraphQLObjectType({
-  name: 'User',
-  description: 'User object for dc user',
+  name: 'Post',
+  description: 'post',
   fields: () => ({
     id: {
       type: GraphQLInt
+    },
+    title: {
+      type: GraphQLString
+    },
+    description: {
+      type: GraphQLString
+    },
+    content: {
+      type: GraphQLString
     },
     created_at: {
       type: GraphQLString
@@ -17,14 +28,9 @@ module.exports = new GraphQLObjectType({
     updated_at: {
       type: GraphQLString
     },
-    username: {
-      type: GraphQLString
-    },
-    email: {
-      type: GraphQLString
-    },
-    avatar_url: {
-      type: GraphQLString
+    author: {
+      type: user,
+      resolve: (post, root, { user }) => user.load(post.author_id)
     },
     status: {
       type: GraphQLInt

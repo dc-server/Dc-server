@@ -7,6 +7,7 @@ const {
 } = require('graphql')
 const user = require('./user')
 const book = require('./book')
+const post = require('./post')
 
 const query = new GraphQLObjectType({
   name: 'Query',
@@ -23,15 +24,6 @@ const query = new GraphQLObjectType({
         console.log(ctx)
         return user.load(id)
       }
-    },
-    users: {
-      type: new GraphQLList(user),
-      args: {
-        ids: {
-          type: new GraphQLList(GraphQLInt)
-        }
-      },
-      resolve: (root, { ids }, { user }) => user.loadMany(ids)
     },
     book: {
       type: book,
@@ -57,6 +49,32 @@ const query = new GraphQLObjectType({
         const off = offset || 5
         const ids = Array(off).fill().map((_, i) => st + i)
         return book.loadMany(ids)
+      }
+    },
+    post: {
+      type: post,
+      args: {
+        id: {
+          type: GraphQLInt
+        }
+      },
+      resolve: (root, { id }, { post }) => post.load(id)
+    },
+    posts: {
+      type: new GraphQLList(post),
+      args: {
+        start: {
+          type: GraphQLInt
+        },
+        offset: {
+          type: GraphQLInt
+        }
+      },
+      resolve: (root, { start, offset }, { post }) => {
+        const st = start || 0
+        const off = offset || 5
+        const ids = Array(off).fill().map((_, i) => st + i)
+        return post.loadMany(ids)
       }
     }
   })

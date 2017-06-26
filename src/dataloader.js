@@ -9,6 +9,13 @@ function User() {
   )
 }
 
+function Post() {
+  return new Dataloader(ids => db.table('posts')
+    .whereIn('id', ids)
+    .select('*')
+  )
+}
+
 function Book() {
   return new Dataloader(ids => axios.all(ids.map(id => {
     const url = `http://graphql-mock.getsandbox.com/book/${id}`
@@ -19,5 +26,6 @@ function Book() {
 
 module.exports = {
   user: User(),
-  book: Book()
+  book: Book(),
+  post: Post()
 }

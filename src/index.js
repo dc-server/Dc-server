@@ -10,6 +10,7 @@ app.use('/graphql', graphqlHTTP(req => ({
   context: {
     user: loader.user,
     book: loader.book,
+    post: loader.post,
     ctx: 'zczc'
   },
   graphiql: true
