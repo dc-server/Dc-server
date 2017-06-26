@@ -10,10 +10,10 @@ function assignType(obj, type) {
 }
 
 function mapTo(keys, keyFn, type, rows) {
-  if (!rows) return mapTo.bind(null, keys, keyFn, type);
-  const group = new Map(keys.map(key => [key, null]));
-  rows.forEach(row => group.set(keyFn(row), assignType(row, type)));
-  return Array.from(group.values());
+  if (!rows) return mapTo.bind(null, keys, keyFn, type)
+  const group = new Map(keys.map(key => [key, null]))
+  rows.forEach(row => group.set(keyFn(row), assignType(row, type)))
+  return Array.from(group.values())
 }
 
 
