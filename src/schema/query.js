@@ -5,6 +5,7 @@ const {
   GraphQLID,
   GraphQLList
 } = require('graphql')
+const db = require('../db')
 const user = require('./user')
 const book = require('./book')
 const post = require('./post')
@@ -21,7 +22,7 @@ const query = new GraphQLObjectType({
         }
       },
       resolve: (root, { id }, { user, ctx }) => {
-        console.log(ctx)
+        // console.log(ctx, id)
         return user.load(id)
       }
     },
@@ -63,18 +64,30 @@ const query = new GraphQLObjectType({
     posts: {
       type: new GraphQLList(post),
       args: {
-        start: {
+        limit: {
           type: GraphQLInt
         },
         offset: {
           type: GraphQLInt
         }
       },
-      resolve: (root, { start, offset }, { post }) => {
-        const st = start || 0
-        const off = offset || 5
-        const ids = Array(off).fill().map((_, i) => st + i)
-        return post.loadMany(ids)
+      resolve: async (root, { limit, offset }, { post }) => {
+        const off = offset || 1
+        const li = limit || 5
+        // const ids = Array(li).fill().map((_, i) => off + i)
+        // console.log(ids)
+        // return Promise.all(ids.map(id => post.load(id)))
+        // const ids = await db.table('posts')
+        //   .orderBy('created_at', 'desc')
+        //   .limit(limit)
+        //   .offset(offset)
+        //   .select('id')
+        // console.log(Array.from(ids, id => id.id))
+        // return post.loadMany(Array.from(ids, id => id.id))
+        return db.table('posts')
+          .orderBy('created_at', 'desc')
+          .limit(limit)
+          .offset(offset)
       }
     }
   })
