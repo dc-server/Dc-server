@@ -1,14 +1,15 @@
-import express from 'express'
-import graphqlHTTP from 'express-graphql'
-import schema from './schema'
-import loader from './dataloader'
+const express = require('express')
+const graphqlHTTP = require('express-graphql')
+const schema = require('./schema')
+const loader = require('./dataloader')
 
 const app = express()
 
 app.use('/graphql', graphqlHTTP(req => ({
   schema,
   context: {
-    ...loader.create(),
+    user: loader.user,
+    book: loader.book,
     ctx: 'zczc'
   },
   graphiql: true

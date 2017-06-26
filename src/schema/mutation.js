@@ -1,7 +1,7 @@
-import { GraphQLInt, GraphQLString, GraphQLObjectType, GraphQLNonNull } from 'graphql'
-import isLength from 'validator/lib/isLength'
-import user from './user'
-import db from '../db'
+const { GraphQLInt, GraphQLString, GraphQLObjectType, GraphQLNonNull } = require('graphql')
+const isLength = require('validator/lib/isLength')
+const user = require('./user')
+const db = require('../db')
 
 const inputFields = {
   username: {
@@ -36,4 +36,4 @@ const Mutation = new GraphQLObjectType({
   }
 })
 
-export default Mutation
+module.exports = Mutation

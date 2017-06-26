@@ -1,13 +1,12 @@
-import {
+const {
   GraphQLObjectType,
   GraphQLString,
   GraphQLInt,
   GraphQLID,
   GraphQLList
-} from 'graphql'
-import user from './user'
-import book from './book'
-import gost from './gost'
+} = require('graphql')
+const user = require('./user')
+const book = require('./book')
 
 const query = new GraphQLObjectType({
   name: 'Query',
@@ -59,17 +58,8 @@ const query = new GraphQLObjectType({
         const ids = Array(off).fill().map((_, i) => st + i)
         return book.loadMany(ids)
       }
-    },
-    gost: {
-      type: gost,
-      args: {
-        id: {
-          type: GraphQLInt
-        }
-      },
-      resolve: (root, { id }, { gost }) => gost.load(id)
     }
   })
 })
 
-export default query
+module.exports = query
