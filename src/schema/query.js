@@ -22,7 +22,7 @@ const query = new GraphQLObjectType({
           type: GraphQLInt
         }
       },
-      resolve: (root, { id }, { user, ctx }) => {
+      resolve: (root, { id }, { user }) => {
         return user.load(id)
       }
     },
