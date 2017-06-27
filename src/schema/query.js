@@ -123,6 +123,24 @@ const query = new GraphQLObjectType({
           .count()
           .then(x => x[0]['count(*)'])
       }
+    },
+    userPosts: {
+      type: new GraphQLList(post),
+      args: {
+        id: {
+          type: GraphQLInt
+        }
+      },
+      resolve: (root, { id }, { userPosts }) => userPosts.load(id)
+    },
+    userVideos: {
+      type: new GraphQLList(video),
+      args: {
+        id: {
+          type: GraphQLInt
+        }
+      },
+      resolve: (root, { id }, { userVideos }) => userVideos.load(id)
     }
   })
 })

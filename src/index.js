@@ -16,7 +16,9 @@ app.use('/graphql', bodyParser.json(), graphqlExpress({
     user: loader.user,
     book: loader.book,
     post: loader.post,
-    video: loader.video
+    video: loader.video,
+    userPosts: loader.userPosts,
+    userVideos: loader.userVideos
   }
 }))
 

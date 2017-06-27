@@ -45,6 +45,22 @@ function Post() {
   )
 }
 
+function UserPosts() {
+  return new Dataloader(ids => db.table('posts')
+    .whereIn('author_id', ids)
+    .select('*')
+    .then(mapToMany(ids, x => x.author_id, 'Post'))
+  )
+}
+
+function UserVideos() {
+  return new Dataloader(ids => db.table('videos')
+    .whereIn('author_id', ids)
+    .select('*')
+    .then(mapToMany(ids, x => x.author_id, 'Video'))
+  )
+}
+
 function Video() {
   return new Dataloader(ids => db.table('videos')
     .whereIn('id', ids)
@@ -65,5 +81,7 @@ module.exports = {
   user: User(),
   book: Book(),
   post: Post(),
-  video: Video()
+  video: Video(),
+  userPosts: UserPosts(),
+  userVideos: UserVideos()
 }
