@@ -9,6 +9,7 @@ const db = require('../db')
 const user = require('./user')
 const book = require('./book')
 const post = require('./post')
+const video = require('./video')
 
 const query = new GraphQLObjectType({
   name: 'Query',
@@ -70,13 +71,57 @@ const query = new GraphQLObjectType({
           type: GraphQLInt
         }
       },
-      resolve: async (root, { limit, offset }, { post }) => {
+      resolve: (root, { limit, offset }) => {
         const off = offset || 1
         const li = limit || 5
         return db.table('posts')
           .orderBy('created_at', 'desc')
           .limit(limit)
           .offset(offset)
+      }
+    },
+    postsCount: {
+      type: GraphQLInt,
+      resolve: () => {
+        return db.table('posts')
+          .count()
+          .then(x => x[0]['count(*)'])
+      }
+    },
+    video: {
+      type: video,
+      args: {
+        id: {
+          type: GraphQLInt
+        }
+      },
+      resolve: (root, { id }, { video }) => video.load(id)
+    },
+    videos: {
+      type: new GraphQLList(video),
+      args: {
+        limit: {
+          type: GraphQLInt
+        },
+        offset: {
+          type: GraphQLInt
+        }
+      },
+      resolve: (root, { limit, offset }) => {
+        const off = offset || 1
+        const li = limit || 5
+        return db.table('videos')
+          .orderBy('created_at', 'desc')
+          .limit(limit)
+          .offset(offset)
+      }
+    },
+    videosCount: {
+      type: GraphQLInt,
+      resolve: () => {
+        return db.table('videos')
+          .count()
+          .then(x => x[0]['count(*)'])
       }
     }
   })

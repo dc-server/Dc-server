@@ -5,6 +5,7 @@ const schema = require('./schema')
 const loader = require('./dataloader')
 
 const PORT = process.env.PORT || 3000
+const ENV = process.env.NODE_ENV
 
 const app = express()
 
@@ -14,13 +15,16 @@ app.use('/graphql', bodyParser.json(), graphqlExpress({
     user: loader.user,
     book: loader.book,
     post: loader.post,
+    video: loader.video,
     ctx: 'zczc'
   }
 }))
 
-app.use('/graphiql', graphiqlExpress({
-  endpointURL: '/graphql'
-}))
+if (ENV !== 'prod') {
+  app.use('/graphiql', graphiqlExpress({
+    endpointURL: '/graphql'
+  }))
+}
 
 app.listen(PORT)
 
@@ -28,9 +32,13 @@ const status = {
   Express: {
     "Online": true,
     "Port": PORT
-  },
-  "GraphiQL": {
+  }
+}
+
+if (ENV !== 'prod') {
+  status.GraphiQL = {
     "url": `http://localhost:${PORT}/graphiql`
   }
 }
+
 console.dir(status, {depth: null, colors: true })
