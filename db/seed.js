@@ -29,4 +29,4 @@ async function seed() {
   process.exit(0)
 }
 
-seed()
+module.exports = seed

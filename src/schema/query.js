@@ -22,7 +22,6 @@ const query = new GraphQLObjectType({
         }
       },
       resolve: (root, { id }, { user, ctx }) => {
-        // console.log(ctx, id)
         return user.load(id)
       }
     },
@@ -74,16 +73,6 @@ const query = new GraphQLObjectType({
       resolve: async (root, { limit, offset }, { post }) => {
         const off = offset || 1
         const li = limit || 5
-        // const ids = Array(li).fill().map((_, i) => off + i)
-        // console.log(ids)
-        // return Promise.all(ids.map(id => post.load(id)))
-        // const ids = await db.table('posts')
-        //   .orderBy('created_at', 'desc')
-        //   .limit(limit)
-        //   .offset(offset)
-        //   .select('id')
-        // console.log(Array.from(ids, id => id.id))
-        // return post.loadMany(Array.from(ids, id => id.id))
         return db.table('posts')
           .orderBy('created_at', 'desc')
           .limit(limit)
